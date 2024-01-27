@@ -16,9 +16,9 @@ A summary of the topics includes:
 - Used `k-means clustering` method to build a behavior segmentation model in order to better understand the visiot traits.
 - Created visualization to understand the trait of each cluster, generating business action for `off-season Winter` activities/promotions planning.
 
-## 3. Conjoint Analysis from Survey data to Realize User Preferences on Arcade
-- Survey data includes but not limited to areas like favorate category of sport game, music, prize... etc.
-- Dummified variables and used `linear regression` to get the average rating of each choices, then recommended to the management level on how to furnish the theme park.
+**3. Conjoint Analysis from Survey data to Realize User Preferences on Arcade**
+- Survey data includes areas like favorate category of sport game, music, prize... etc. (each category has 3 to 5 options to choose)
+- Dummified variables and used `linear regression` to compare the rating of each survey to realize what are favored by most of the visitors, then recommended to the management level on how to furnish the theme park.
 
 ## Project I: Explorary Analysis And Visualization
 A couple of insighs generated from this projects:
@@ -135,6 +135,42 @@ On the other hand, the "One-and-Done Nibblers" group should be the last priority
 
 ### Conjoint Analysis on Survey Data
 
+#### Step 1: Dummfied variables
+```
+new_gold_dummy = pd.get_dummies(new_gold,drop_first = True,columns = ['music_physical','sports_physical','retro_arcade','pinball','tough_skill','coaster_sim','jukebox_run','crane_prizes'])
+```
+
+#### Step 2: Built a linear model
+```
+X = new_gold_dummy.iloc[:,1:]
+y = new_gold_dummy['avg_rating']
+regressor = LinearRegression()
+regressor.fit(X,y)
+```
+
+#### Step 3: Realize visitor preferences based on coefficient
+```
+coef_new_gold = pd.DataFrame(regressor.coef_, X.columns, columns=['Coefficient'])
+```
+
+Based on the result, the mamagement level can make the following changes to the arcade to meet visitor preferences:
+
+* **music_physical:** Dance Dance Revolution
+* **sports_physical:** Connect Four Hoops
+* **retro_arcade:** Simpsons
+* **pinball:** Monopoly
+* **tough_skill:** Big Wheel
+* **crane_prize:** Ticket bundles
+* **coaster_sim:** 540 seconds
+* **jukebox_run:** 4 times
+
+#### Business Recommendation
+Based on the results above, here are some recommendations on marketing strategies to further enhance visitor satisfaction:
+* Emphasize and promote the Dance Dance Revolution and Connect Four Hoops machines more.
+* Propose a collaboration with Simpsons - for example, obtaining copyrights on machine designs, decorations, and branding across Lobster Land. We could even host a "Simpsons" festival to boost overall profits.
+* Re-design the ticket bundles to include prizes from customers' preferred games.
+
+<img width="382" alt="image" src="https://github.com/leonlin97/Marketing-Analytics/assets/142073522/ea3cab37-7d7e-45e3-9981-3682aa109bf4">
 
 
 
