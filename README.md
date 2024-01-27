@@ -12,11 +12,11 @@ A summary of the topics includes:
 - Identified Null and innormal value/text, replacing them with apporate value based on business goals.
 - Grouped, conditionally aggregated and visualized data to discover insights.
 
-[**2. Visitor Segmentation for Custimzed Marketing Strategies**](Visitor-Segmentation)
+[**2. Visitor Segmentation for Custimzed Marketing Strategies**](#Visitor-Segmentation)
 - Used `k-means clustering` method to build a behavior segmentation model in order to better understand the visiot traits.
 - Created visualization to understand the trait of each cluster, generating business action for `off-season Winter` activities/promotions planning.
 
-[**3. Conjoint Analysis from Survey data to Realize User Preferences on Arcade**](Conjoint-Analysis-on-Survey-Data)
+[**3. Conjoint Analysis from Survey data to Realize User Preferences on Arcade**](#Conjoint-Analysis-on-Survey-Data)
 - Survey data includes areas like favorate category of sport game, music, prize... etc. (each category has 3 to 5 options to choose)
 - Dummified variables and used `linear regression` to compare the rating of each survey to realize what are favored by most of the visitors, then recommended to the management level on how to furnish the theme park.
 
