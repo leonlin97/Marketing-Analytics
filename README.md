@@ -8,15 +8,15 @@ Technical skills: `Pyhton` (Data Analysis and Visualization)
 
 A summary of the topics includes:
 
-[**1. Data Exploratory and Manipulation**](#project-ii-Visitor-Segmentation-and-Conjoint-Analysis-with-Linear-Regression-Model)
+[**1. Data Exploratory and Manipulation**](#project-i-Explorary-Analysis-And-Visualization)
 - Identified Null and innormal value/text, replacing them with apporate value based on business goals.
 - Grouped, conditionally aggregated and visualized data to discover insights.
 
-**2. Visitor Segmentation for Custimzed Marketing Strategies**
+[**2. Visitor Segmentation for Custimzed Marketing Strategies**](Visitor-Segmentation)
 - Used `k-means clustering` method to build a behavior segmentation model in order to better understand the visiot traits.
 - Created visualization to understand the trait of each cluster, generating business action for `off-season Winter` activities/promotions planning.
 
-**3. Conjoint Analysis from Survey data to Realize User Preferences on Arcade**
+[**3. Conjoint Analysis from Survey data to Realize User Preferences on Arcade**](Conjoint-Analysis-on-Survey-Data)
 - Survey data includes areas like favorate category of sport game, music, prize... etc. (each category has 3 to 5 options to choose)
 - Dummified variables and used `linear regression` to compare the rating of each survey to realize what are favored by most of the visitors, then recommended to the management level on how to furnish the theme park.
 
@@ -46,7 +46,7 @@ A couple of insighs generated from this projects:
 - Number of 2024 pass signups increased rapidly in September. This might be due to the approaching deadline for pass registration, so many people likely decided to purchase the pass to avoid missing the deadline.
 <img width="557" alt="image" src="https://github.com/leonlin97/Marketing-Analytics/assets/142073522/2fe93184-33d1-46ae-a288-27fc2a08bc45">
 
-## Project II: Visitor Segmentation and Conjoint Analysis with Linear Regression Model
+## Project II: Visitor Segmentation and Conjoint Analysis of Survey
 This project used `k-means clustering` method to build a behavioral segmentation model in order to better understand Lobsterland's passholders.
 
 Library used: `sklearn`,`matplotlib`, `seaborn`
