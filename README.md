@@ -20,6 +20,8 @@ A summary of the topics includes:
 - Survey data includes areas like favorate category of sport game, music, prize... etc. (each category has 3 to 5 options to choose)
 - Dummified variables and used `linear regression` to compare the rating of each survey to realize what are favored by most of the visitors, then recommended to the management level on how to furnish the theme park.
 
+
+
 ## Project I: Explorary Analysis And Visualization
 A couple of insighs generated from this projects:
 - Comparing the revenue gain from source A and source B during `rainy` day and `not rainy` day. --> Revenue of source B would be greatly affected by the weather factor.
