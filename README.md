@@ -8,7 +8,7 @@ Technical skills: `Pyhton` (Data Analysis and Visualization)
 
 A summary of the topics includes:
 
-[**1. Data Exploratory and Manipulation**](#project-i-exploratory-analysis-and-visualization)
+[**1. Data Exploratory and Manipulation**](#project-ii-Visitor-Segmentation-and-Conjoint-Analysis-with-Linear-Regression-Model)
 - Identified Null and innormal value/text, replacing them with apporate value based on business goals.
 - Grouped, conditionally aggregated and visualized data to discover insights.
 
