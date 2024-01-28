@@ -20,7 +20,7 @@ A summary of the topics includes:
 - Survey data includes areas like favorate category of sport game, music, prize... etc. (each category has 3 to 5 options to choose)
 - Dummified variables and used `linear regression` to compare the rating of each survey to realize what are favored by most of the visitors, then recommended to the management level on how to furnish the theme park.
 
-[**4. Prediction of Preference for Indoor or Outdoor Activities**](#project-iii)
+[**4. Prediction of Preference for Indoor or Outdoor Activities**](#Project-III-Prediction-of-Preference-for-Indoor-or-Outdoor-Activities)
 - Built `Logistic Regression` and `Random Forest` model to predict if a visitor would prefer 'Indoor' or "Outdoor' activities.
 - Compared the result and the accuracy of two models, generating actions for the business strategies.
 
@@ -178,7 +178,7 @@ Based on the results above, here are some recommendations on marketing strategie
 
 <img width="382" alt="image" src="https://github.com/leonlin97/Marketing-Analytics/assets/142073522/ea3cab37-7d7e-45e3-9981-3682aa109bf4">
 
-## Project III: Predicting A Visitor's Preference For Indoor Or Outdoor Activities
+## Project III: Prediction of Preference for Indoor or Outdoor Activities
 Business Goal: How do we attract more visitors to indoor activities to boost revenue and build customer satisfaction?
 
 From historical data recording each visitor's gender, age, distance, occupation... with their preference on indoor or outdoor activities, my goal is to build a model that find out what factors greatly impact their dicision, then build a strategies for promoting our indoor activities selection and activities.
