@@ -28,7 +28,7 @@ A summary of the topics includes:
 - Used `t-test` to find out if people returned more items during holiday, weekday and weekends.
 - Used `Chi-Square Goodness of Fit` to test whether day type impacts the likelihood that a consumer will return something after making a purchase.
 
-[**6. Marketing Mix Modeling with an Interaction Term **](#Project-V-Marketing-Mix-Model)
+[**6. Marketing Mix Modeling with an Interaction Term**](#Project-V-Marketing-Mix-Model)
 - Created interaction term and used `F-Statistic` method to inspect the marketing performance on YouTube Ad, Spotify Ad, and Banner Ad.
 
 ## Project I: Explorary Analysis And Visualization
@@ -448,7 +448,9 @@ predicted_sales = model.predict(input_data)
 # Print the predicted sales outcome
 print("Predicted Sales:", round(predicted_sales.iloc[0],2))
 ```
+### Conclusion
 
+In marketing terms, the interaction between YouTube and Spotify ad spending suggests that when you invest in both YouTube and Spotify ads simultaneously, their effectiveness in driving sales is not just additive but can create a synergy that leads to a greater boost in sales than using either platform alone. It highlights the importance of considering the joint influence of these advertising channels for optimizing marketing strategies and maximizing sales outcomes.
 
 
 
