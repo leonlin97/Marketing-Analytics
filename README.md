@@ -24,7 +24,12 @@ A summary of the topics includes:
 - Built `Logistic Regression` and `Random Forest` model to predict if a visitor would prefer 'Indoor' or "Outdoor' activities.
 - Compared the result and the accuracy of two models, generating actions for the business strategies.
 
+[**5. Hypothesis Testing**](#Project-IIII-Hypothesis-Testing)
+- Used `t-test` to find out if people returned more items during holiday, weekday and weekends.
+- Used `Chi-Square Goodness of Fit` to test whether day type impacts the likelihood that a consumer will return something after making a purchase.
 
+[**6. Marketing Mix Modeling with an Interaction Term **](#Project-V-Marketing-Mix-Model)
+- Created interaction term and used `F-Statistic` method to inspect the marketing performance on YouTube Ad, Spotify Ad, and Banner Ad.
 
 ## Project I: Explorary Analysis And Visualization
 A couple of insighs generated from this projects:
@@ -300,6 +305,150 @@ If the management wants to promote Indoor Activities, they can emphasize on thes
 - Indoor sport playground for less sedentary person to get exercise
 
 <img width="704" alt="image" src="https://github.com/leonlin97/Marketing-Analytics/assets/142073522/2a079047-d444-4e77-849a-dd324cbac0b1">
+
+## Project IIII: Hypothesis Testing
+
+This project discovered the pattern of customer return of purchased items during holidays, weekdays and weekends to improve the sales performance.
+
+### Is the return rate is higher for product purchased on holidays, weekdays, and weekends?
+
+After getting the average return proportion on each three day type, I performed t-tests of three combination to see if there are significant differences.
+
+```
+a = 0.0167 -- Bonferroni correction from a = 0.05
+t_WR,p_WR = stats.ttest_ind(df3.loc[df3['day_code']=='W','return_proportion'].values,
+                     df3.loc[df3['day_code']=='R','return_proportion'].values,equal_var=False)
+t_WH,p_WH = stats.ttest_ind(df3.loc[df3['day_code']=='W','return_proportion'].values,
+                     df3.loc[df3['day_code']=='H','return_proportion'].values,equal_var=False)
+t_RH,p_RH = stats.ttest_ind(df3.loc[df3['day_code']=='R','return_proportion'].values,
+                     df3.loc[df3['day_code']=='H','return_proportion'].values,equal_var=False)
+p_result = [p_WR,p_WH,p_RH]
+a_result = ["Reject null hypothesis" if i < a else "Accept null hypothesis" for i in p_result]
+ttest_result = pd.DataFrame({
+    'Comparison' : ['Weekend x Regular Day','Weenend x Holiday','Regular Day x Holiday'],
+    'p value' : p_result,
+    'Test Result' : a_result
+})
+ttest_result
+```
+
+The t-test results indicate that there is no significant difference in the return proportion between weekends and regular days (p = 0.512313) or weekends and holidays (p = 0.040996), meaning customers are returning goods at similar rates across these day types. However, the return proportion is significantly different between regular days and holidays (p = 0.008406), meaning customers are actually return more items purchased on holiday comparing to regular day.
+
+I think the management can analyze the types of products purchased and the promotions run on holidays that result in lower return rates, with the aim of replicating successful aspects throughout the year.
+
+<img width="402" alt="image" src="https://github.com/leonlin97/Marketing-Analytics/assets/142073522/5c6a8e8f-221c-4068-a39b-637233c60d6f">
+
+```
+a = 0.0167
+t_WR_return,p_WR_return = stats.ttest_ind(df4.loc[df4['day_code']=='W','return_proportion'].values,
+                     df4.loc[df4['day_code']=='R','return_proportion'].values,equal_var=False)
+t_WH_return,p_WH_return = stats.ttest_ind(df4.loc[df4['day_code']=='W','return_proportion'].values,
+                     df4.loc[df4['day_code']=='H','return_proportion'].values,equal_var=False)
+t_RH_return,p_RH_return = stats.ttest_ind(df4.loc[df4['day_code']=='R','return_proportion'].values,
+                     df4.loc[df4['day_code']=='H','return_proportion'].values,equal_var=False)
+p_result_return = [p_WR_return,p_WH_return,p_RH_return]
+a_result_return = ["Reject null hypothesis" if i < a else "Accept null hypothesis" for i in p_result]
+ttest_result_return = pd.DataFrame({
+    'Comparison' : ['Weekend x Regular Day','Weenend x Holiday','Regular Day x Holiday'],
+    'p value' : p_result_return,
+    'Test Result' : a_result_return
+})
+ttest_result_return
+```
+
+When focusing on those who returned something, there is even a significant differences between weekend and holiday day, indicating that the management should put extra effor on reviewing holiday promotions and products. Some issues might be misleading promotion on holidays or lower-quality products on holiday.
+
+### Testing whether day type impacts the likelihood that a consumer will return something after making a purchase.
+
+The null hypothesis here would be "there is no impact of returning goods based on different day type", so our `expected returns on each day type`would be: `( Total purchases / Total returns) × Total purchases for day type `.
+
+
+The return rate is 37%, calculating based on the `total return number / total purchase number`.
+From the calculation, the expected returns of each day type is approximately:
+- Holiday: 206
+- Regular Day: 485
+- Weekend: 359
+```
+actual = [len(df4[df4['day_code'] == 'H']),
+           len(df4[df4['day_code'] == 'R']),
+            len(df4[df4['day_code'] == 'W'])]
+chi_df = pd.DataFrame({
+    'day type':day_type,
+    'Expect': adjusted_expected,
+    'Actual': actual
+})
+
+chi_df
+```
+
+Then, using the actual and run the chi-square test.
+
+```
+chi,p_chi = chisquare(f_obs =chi_df.iloc[:,1] ,f_exp = chi_df.iloc[:,2])
+print('The chisquare value is: ',chi)
+print('p-value is: ',p_chi)
+```
+
+The p-value is 0.97 -- far larger than my ahpla threshold (0.05), meaning based on this statistical testing I do not have evidence to reject null hyphothesis.
+
+The conclusion from the chi-square testing is that different day type does not impact the likelihood that a consumer will return something after making a purchase. 
+
+## Project V: Marketing Mix Model
+
+This project examed the marketing performance by extracting cost and revenue from YouTube Ad, Spotify Ad, and Banner Ad to see if investing in all these three channel would create a positive effect for sales.
+
+### 1st Model: taking YouTube, Spotify, and Banner channel into testing
+
+```
+X = ad2[['YouTube','Spotify','Banners']]
+y = ad2['Sales']
+X = sm.add_constant(X)
+model = sm.OLS(y, X).fit()
+print(model.summary())
+```
+
+The p-value of the F-statistic is 1.58e-96, which is really low, indicating that there is strong evidence that at least one of the independent variables (YouTube ad spending, Spotify ad spending, or banner ad spending) has a statistically significant impact on the dependent variable (Sales). Besides, the overall regression model is likely a good fit for the data because it explains a significant amount of the variation in the dependent variable.
+
+After looking deeper in this model, the p-value of YouTube and Spotify is 0 -- meaning they have significant impact on Sales. However, Banners get a p-value of 0.86 -- meaning Banners does not have strong impact toward Sales.
+
+<img width="868" alt="image" src="https://github.com/leonlin97/Marketing-Analytics/assets/142073522/2bd18628-ef06-4ed1-85ef-0ad8ceb6eb0e">
+
+### 2nd Model: adding interaction term of `Spotiy` x `YouTube`
+```
+ad2['Interaction'] = ad2['YouTube'] * ad2['Spotify']
+X = ad2[['YouTube','Spotify','Interaction']]
+y = ad2['Sales']
+X = sm.add_constant(X)
+model = sm.OLS(y, X).fit()
+print(model.summary())
+```
+
+The p-value of all variables are 0, meaning YouTube ad spending and Spotify ad spending both have significant and independent effects on Sales. Also, the interaction between YouTube and Spotify ad spending is also highly significant and represents a combined effect beyond their individual contributions.
+
+The r-square with interaction is 0.968 -- higher than that without interaction (0.897). Since r-square indicates how well the model fits the data, it is clear to see the model performs better when considering the interaction between YouTube and Spotify ad spending.
+
+<img width="880" alt="image" src="https://github.com/leonlin97/Marketing-Analytics/assets/142073522/67464f04-8496-4300-b23e-84929d6d6380">
+
+### Using the model to predict sales
+
+With spending 150 on YouTube and 30 on Spotify, the Sales prediction (by using the model with interaction) is: 1,142.98
+
+```
+YouTube = 150
+Spotify = 30
+
+input_data = pd.DataFrame({'YouTube': [YouTube],
+                           'Spotify': [Spotify],
+                           'Interaction': [YouTube * Spotify],
+                           'const': [1]})
+
+# Use the model to make predictions
+predicted_sales = model.predict(input_data)
+
+# Print the predicted sales outcome
+print("Predicted Sales:", round(predicted_sales.iloc[0],2))
+```
+
 
 
 
