@@ -20,6 +20,10 @@ A summary of the topics includes:
 - Survey data includes areas like favorate category of sport game, music, prize... etc. (each category has 3 to 5 options to choose)
 - Dummified variables and used `linear regression` to compare the rating of each survey to realize what are favored by most of the visitors, then recommended to the management level on how to furnish the theme park.
 
+[**4. Prediction of Preference for Indoor or Outdoor Activities**]()
+- Built `Logistic Regression` and `Random Forest` model to predict if a visitor would prefer 'Indoor' or "Outdoor' activities.
+- Compared the result and the accuracy of two models, generating actions for the business strategies.
+
 
 
 ## Project I: Explorary Analysis And Visualization
@@ -166,7 +170,7 @@ Based on the result, the mamagement level can make the following changes to the 
 * **coaster_sim:** 540 seconds
 * **jukebox_run:** 4 times
 
-#### Business Recommendation
+### Business Recommendation
 Based on the results above, here are some recommendations on marketing strategies to further enhance visitor satisfaction:
 * Emphasize and promote the Dance Dance Revolution and Connect Four Hoops machines more.
 * Propose a collaboration with Simpsons - for example, obtaining copyrights on machine designs, decorations, and branding across Lobster Land. We could even host a "Simpsons" festival to boost overall profits.
@@ -174,6 +178,128 @@ Based on the results above, here are some recommendations on marketing strategie
 
 <img width="382" alt="image" src="https://github.com/leonlin97/Marketing-Analytics/assets/142073522/ea3cab37-7d7e-45e3-9981-3682aa109bf4">
 
+## Project III: Predicting A Visitor's Preference For Indoor Or Outdoor Activities
+Business Goal: How do we attract more visitors to indoor activities to boost revenue and build customer satisfaction?
+
+From historical data recording each visitor's gender, age, distance, occupation... with their preference on indoor or outdoor activities, my goal is to build a model that find out what factors greatly impact their dicision, then build a strategies for promoting our indoor activities selection and activities.
+
+
+### Step 1: Data cleaning and transformation
+
+One important thing here, in addition to manipulating data for model preparation, is to identify variables that do not have enough power in showing people's preferences. For example, if there are 50 males and 50 females prefer indoor, then gender might not be a good indicator.
+
+### Step 2: Built a Logistic Regression Model
+
+```
+# Dummy variable
+preprocessor_lr = ColumnTransformer(
+    transformers=[
+        ('num', SimpleImputer(strategy='median'), numeric_variable),
+        ('cat', OneHotEncoder(drop='first'), categorical_variable)
+    ])
+
+# Split data to train and test
+X = carnival.drop('preference', axis=1)
+y = carnival['preference']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=654)
+
+
+pipeline_lr = Pipeline(steps=[('preprocessor', preprocessor_lr),
+                              ('classifier', LogisticRegression(max_iter=1000, random_state=654))])
+pipeline_lr.fit(X_train, y_train)
+
+# Prediction
+y_pred_lr = pipeline_lr.predict(X_test)
+
+# Calculating accuracy and AUC for Logistic Regression model
+accuracy_lr = accuracy_score(y_test, y_pred_lr)
+auc_lr = roc_auc_score(y_test, pipeline_lr.predict_proba(X_test)[:, 1])
+
+# Extracting feature names after one-hot encoding
+feature_names_lr = (pipeline_lr.named_steps['preprocessor']
+                    .named_transformers_['cat']
+                    .get_feature_names_out(input_features=categorical_variable))
+
+# Combining feature names for both numeric and categorical variables
+feature_names_lr = np.concatenate([numeric_variable, feature_names_lr])
+# Getting coefficients for Logistic Regression model
+coefficients_lr = pipeline_lr.named_steps['classifier'].coef_[0]
+
+# Creating a DataFrame for Logistic Regression feature importance
+lr_feature_importance = pd.DataFrame({'Feature': feature_names_lr, 'Coefficient': coefficients_lr})
+lr_top_features = lr_feature_importance.reindex(lr_feature_importance.Coefficient.abs().sort_values(ascending=False).index).head(4)
+
+print(f'The accuracy of Logistic Regression Model is: {round(accuracy_lr,2)} with AUC = {round(auc_lr,2)}')
+lr_feature_importance
+lr_top_features
+```
+
+### Step 3: Built a Random Forest Model
+
+```
+preprocessor_rf = ColumnTransformer(
+    transformers=[
+        ('num', SimpleImputer(strategy='median'), numeric_variable),
+        ('cat', OneHotEncoder(), categorical_variable)
+    ])
+pipeline_rf = Pipeline(steps=[('preprocessor', preprocessor_rf),
+                              ('classifier', RandomForestClassifier(random_state=654))])
+
+pipeline_rf.fit(X_train, y_train)
+y_pred_rf = pipeline_rf.predict(X_test)
+
+# Calculating accuracy and AUC for Random Forest model
+accuracy_rf = accuracy_score(y_test, y_pred_rf)
+auc_rf = roc_auc_score(y_test, pipeline_rf.predict_proba(X_test)[:, 1])
+
+# Getting feature importances for Random Forest model
+feature_importances_rf = pipeline_rf.named_steps['classifier'].feature_importances_
+
+# Extracting feature names for Random Forest model (no level dropped)
+feature_names_rf = (pipeline_rf.named_steps['preprocessor']
+                    .named_transformers_['cat']
+                    .get_feature_names_out(input_features=categorical_variable))
+
+# Combining feature names for both numeric and categorical variables
+feature_names_rf = np.concatenate([numeric_variable, feature_names_rf])
+
+# Creating a DataFrame for Random Forest feature importance
+rf_feature_importance = pd.DataFrame({'Feature': feature_names_rf, 'Importance': feature_importances_rf})
+rf_top_features = rf_feature_importance.reindex(rf_feature_importance.Importance.abs().sort_values(ascending=False).index).head(4)
+
+
+print(f'The accuracy of Random Forest Model is: {round(accuracy_rf,2)} with AUC = {round(auc_rf,2)}')
+rf_feature_importance
+rf_top_features
+```
+
+### Step 4: Compared the Accuracy of Two Model
+
+Below Table shows the model accuracy comparing Logistic Regression and Random Forest. Since the Logistic Regression Model has a better performance in both accuracy and AUC, we decided to use the result from logistic regression to generate some insights.
+
+<img width="725" alt="image" src="https://github.com/leonlin97/Marketing-Analytics/assets/142073522/f09dc563-77ce-484b-8cee-db34b820a5c1">
+
+### Step 5: Discovered Insights from Logistic Regression Model
+
+Three type of people would be more preferable to infoor activities:
+- Physically sedentary
+- Less companion (solo visitor or with 2 to 3 friends/family member)
+- Foreigners (People living outside the US)
+
+If the management wants to promote Indoor Activities, they can emphasize on these strategies that greatly impact a person’s decision to choose indoor activities. The strategy can focus on increasing customer satisfaction and attracting more visitors.
+
+#### Increaseing customer satisfaction
+
+- Enhanced the accessibility infrastructure within the theme park
+- Provided diverse indoor events, such as food tasting, entertainments shows
+- Guide tours and social networking events for solo visitors
+- Multi-culture acrade and food vendors within the park
+
+#### Attracting visitors who prefer outdoor activities to indoors
+- Group visitor: family-friendly shows and exhibition center; educational program for winter camping
+- Indoor sport playground for less sedentary person to get exercise
+
+<img width="704" alt="image" src="https://github.com/leonlin97/Marketing-Analytics/assets/142073522/2a079047-d444-4e77-849a-dd324cbac0b1">
 
 
 
