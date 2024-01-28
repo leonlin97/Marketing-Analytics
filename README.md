@@ -20,7 +20,7 @@ A summary of the topics includes:
 - Survey data includes areas like favorate category of sport game, music, prize... etc. (each category has 3 to 5 options to choose)
 - Dummified variables and used `linear regression` to compare the rating of each survey to realize what are favored by most of the visitors, then recommended to the management level on how to furnish the theme park.
 
-[**4. Prediction of Preference for Indoor or Outdoor Activities**]()
+[**4. Prediction of Preference for Indoor or Outdoor Activities**](Project-III-Predicting-A-Visitor's-Preference-For-Indoor-Or-Outdoor-Activities)
 - Built `Logistic Regression` and `Random Forest` model to predict if a visitor would prefer 'Indoor' or "Outdoor' activities.
 - Compared the result and the accuracy of two models, generating actions for the business strategies.
 
