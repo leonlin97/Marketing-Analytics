@@ -414,6 +414,7 @@ After looking deeper in this model, the p-value of YouTube and Spotify is 0 -- m
 <img width="868" alt="image" src="https://github.com/leonlin97/Marketing-Analytics/assets/142073522/2bd18628-ef06-4ed1-85ef-0ad8ceb6eb0e">
 
 ### 2nd Model: adding interaction term of `Spotiy` x `YouTube`
+
 ```
 ad2['Interaction'] = ad2['YouTube'] * ad2['Spotify']
 X = ad2[['YouTube','Spotify','Interaction']]
@@ -448,6 +449,7 @@ predicted_sales = model.predict(input_data)
 # Print the predicted sales outcome
 print("Predicted Sales:", round(predicted_sales.iloc[0],2))
 ```
+
 ### Conclusion
 
 In marketing terms, the interaction between YouTube and Spotify ad spending suggests that when you invest in both YouTube and Spotify ads simultaneously, their effectiveness in driving sales is not just additive but can create a synergy that leads to a greater boost in sales than using either platform alone. It highlights the importance of considering the joint influence of these advertising channels for optimizing marketing strategies and maximizing sales outcomes.
